@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org/"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Product List</title>
+  <th:block th:replace="layout :: link-css"></th:block>
+</head>
+<body>
+<th:block th:replace="layout :: header"></th:block>
+<form class="container" th:action="@{/products/search}" method="get">
+  <input class="form-control flex-grow-1" type="search" name="searchText" placeholder="Search" aria-label="Search">
+  <button class="btn btn-outline-success flex-grow-1" type="submit">Search</button>
+</form>
+<div class="container">
+  <h1 th:text="${name}"></h1>
+  <table class="table">
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Images</th>
+      <th>Price</th>
+      <th>Category</th>
+      <th sec:authorize="hasAnyAuthority('ADMIN')">Action</th>
+    </tr>
+    <tr th:each="product : ${products}">
+      <td th:text="${product.id}"></td>
+      <td th:text="${product.name}"></td>
+      <td>
+        <img height="120" width="150" th:src="@{/images/} + ${product.image}"/>
+      </td>
+      <td th:text="${product.price}"></td>
+      <td th:text="${product.category.name}"></td>
+      <td sec:authorize="hasAnyAuthority('ADMIN')">
+        <a th:href="@{/products/edit/{id}(id=${product.id})}">Edit</a>  |
+        <a th:href="@{/products/delete/{id}(id=${product.id})}" onclick="return confirm('Are you sure ?')">Delete</a>
+      </td>
+      <td sec:authorize="hasAnyAuthority('USER')" >
+        <form th:action="@{/products/add-to-cart}" method="post" class="d-inline">
+          <input type="hidden" name="id" th:value="${product.getId()}">
+          <input type="hidden" name="name"th:value="${product.getName()}">
+          <input type="hidden" name="image" th:value="${product.getImage()}">
+          <input type="hidden" name="price" th:value="${product.getPrice()}">
+
+          <button type="submit" class="btn btn-success" onclick="return confirm('Are you sure you want to add this book to cart?')">Add to cart</button>
+        </form>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<th:block th:replace="layout :: footer"></th:block>
+</body>
+</html>
