@@ -2025,7 +2025,7 @@ section.dottad_star_bg {
 }
 
 .stars_dottat {
-	background: url('../images/star_dots.png');
+	background: url('..static/images/star_dots.png');
 }
 
 .only_parallax {
@@ -3503,7 +3503,7 @@ footer ul.social_icons {
 
 .gross_layout.right_gross_layout::after {
 	position: absolute;
-	background: url(../images/it_service/dark_bg_img2.png);
+	background: url(..static/images/it_service/dark_bg_img2.png);
 	width: 35%;
 	height: 100%;
 	left: 0;
